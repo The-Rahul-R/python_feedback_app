@@ -1,17 +1,10 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
-from send_mail import send_mail
+
 
 app = Flask(__name__)
 
-ENV = 'dev'
-
-if ENV == 'dev':
-    app.debug = True
-    app.config['SQLALCHEMY_DATABASE_URI'] = ''
-else:
-    app.debug = False
-    app.config['SQLALCHEMY_DATABASE_URI'] = ''
+app.config['SQLALCHEMY_DATABASE_URI'] = ''
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -52,7 +45,7 @@ def submit():
             data = Feedback(customer, dealer, rating, comments)
             db.session.add(data)
             db.session.commit()
-            send_mail(customer, dealer, rating, comments)
+            
             return render_template('success.html')
         return render_template('index.html', message='You have already submitted feedback')
 
